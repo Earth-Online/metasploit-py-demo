@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from metasploit import module
 
 metadata = {
@@ -19,7 +19,7 @@ metadata = {
 
      ],
     # bug type
-    'type': 'scan',
+    'type': 'scanner',
     # module options 
     'options': {
         'rhost': {'type': 'address', 'description': 'The target address', 'required': True, 'default': None},
