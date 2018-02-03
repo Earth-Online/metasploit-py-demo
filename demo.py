@@ -1,33 +1,40 @@
 #!/usr/bin/env python
+# Note, works with both python 2.7 and 3
+
+import random
+import socket
+import ssl
+import string
+import time
+
 from metasploit import module
 
 metadata = {
-    # module name
-    'name': 'metasploit python module demo ',
+    'name': 'metasploit python module demo',
     # module descript
     'description': '''
-    hello world 
+    hello world
     ''',
     # module authors
     'authors': [
-        'bluebird',
+        'bluebird'
     ],
     # module write time
     'date': '2018-02-02',
     # bug reference
     'references': [
-
      ],
     # bug type
-    'type': 'scanner',
-    # module options 
+    'type': 'dos',
     'options': {
         'rhost': {'type': 'address', 'description': 'The target address', 'required': True, 'default': None},
         'rport': {'type': 'port', 'description': 'The target port', 'required': True, 'default': 80},
      }}
 
+
 def run(args):
     module.log('hello world')
+
 
 if __name__ == "__main__":
     module.run(metadata, run)
