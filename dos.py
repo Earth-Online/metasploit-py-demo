@@ -42,14 +42,10 @@ def run(args):
     module.log("Creating sockets...", 'info')
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    exp = {
-        'id': 1,
-        'jsonrpc': '1.0',
-        'method': '%n'
-    }
+    exp = '''{"id": 1,"jsonrpc": "1.0","method": "%n"}'''
     try:
         s.connect((host, port))
-        s.send(json.dumps(exp))
+        s.send(bytes(exp,'utf-8'))
         s.close()
     except socket.error:
         module.log("connect error exit")
